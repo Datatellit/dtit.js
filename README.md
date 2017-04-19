@@ -15,9 +15,8 @@ import dtit from 'dtitjs';
 
 ```
 <script src="xxx/dtit.js"></script>
-```  
-
 _d.xxxx
+```  
 
 ## 3.Demo
 ```
