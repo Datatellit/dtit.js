@@ -9,7 +9,15 @@ var dtit = require('dtitjs');  
 
 <b>OR</b>  
 
-import dtit from 'dtitjs';
+import dtit from 'dtitjs';  
+
+<b>OR</b>  
+
+```
+<script src="xxx/dtit.js"></script>
+```  
+
+_d.xxxx
 
 ## 3.Demo
 ```
