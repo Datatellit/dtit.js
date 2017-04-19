@@ -50,4 +50,4 @@ import dtit from 'dtitjs';
     })
 ```
 ## 4.npm仓库
-[foo]: https://www.npmjs.com/package/dtitjs "Click Me"
+https://www.npmjs.com/package/dtitjs
