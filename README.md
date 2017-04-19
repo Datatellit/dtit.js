@@ -49,3 +49,5 @@ import dtit from 'dtitjs';
         console.log(value, index);
     })
 ```
+## 4.npm仓库
+[foo]: https://www.npmjs.com/package/dtitjs "Click Me"
