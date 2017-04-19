@@ -12,7 +12,7 @@ var dtit = require('dtitjs');  
 import dtit from 'dtitjs';
 
 ## 3.Demo
-<code>
+```
     //获取参数
     console.log(_d.query("_ijt"));
     console.log(_d.query()); //获取所有参数，返回一个对象
@@ -48,4 +48,4 @@ import dtit from 'dtitjs';
             return false; //跳出
         console.log(value, index);
     })
-</code>
+```
