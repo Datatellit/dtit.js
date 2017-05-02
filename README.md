@@ -58,3 +58,7 @@ _d.xxxx
 ```
 ## 4.npm仓库
 https://www.npmjs.com/package/dtitjs
+## 5.TODO  
+- [] 添加开发者模式  
+- [] 记录函数使用频率  
+- [] ...
