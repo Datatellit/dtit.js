@@ -201,7 +201,7 @@
         });
     } else {
         this.dtit = dtit;
+		//绑定全局使用
+		window._d = window.dtit = this.dtit();
     }
-    //绑定全局使用
-    window._d = window.dtit = this.dtit();
 })(window);
