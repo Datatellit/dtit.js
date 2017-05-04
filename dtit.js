@@ -194,10 +194,10 @@
     }
     //支持cmd and amd
     if (typeof module !== 'undefined' && typeof exports === 'object' && define.cmd) {
-        module.exports = dtit;
+        module.exports = dtit();
     } else if (typeof define === 'function' && define.amd) { //支持amd
         define(function () {
-            return dtit;
+            return dtit();
         });
     } else {
         this.dtit = dtit;
