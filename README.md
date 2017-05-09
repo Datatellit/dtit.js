@@ -55,6 +55,11 @@ _d.xxxx
             return false; //跳出
         console.log(value, index);
     })
+    //颜色转换，支持hsl,hex,rgb任意转换
+    var color = _d.tinycolor("#fed001"); //参数支持 1、string型的hex,hsl,rgb  2、object型的{h:x,s:x,l:x},{r:x,g:x,b:x}
+    console.log(color.toHex()); //得到16进制颜色  返回 "#fed001"
+    console.log(color.toHsl());//得到hsl颜色对象  返回 {h: 0.13636363636363635, s: 0.9921568627450981, l: 0.5}
+    console.log(color.toRgb());//得到rgb颜色对象  返回 {r: 254, g: 208, b: 1}
 ```
 ## 4.npm仓库
 https://www.npmjs.com/package/dtitjs

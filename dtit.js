@@ -6,8 +6,19 @@
 
 //noinspection JSAnnotator
 (function (window) {
-
     var dtit = function () {
+        var xhr = function () {
+            if (window.XMLHttpRequest) {
+                return new XMLHttpRequest();
+            } else {
+                return new ActiveObject('Micrsorf.XMLHttp');
+            }
+        };
+        var report = function () {
+            var newXhr = xhr();
+            newXhr.open("get", "", true);
+            newXhr.send(null);
+        }
         return {
             /**
              *
@@ -189,6 +200,224 @@
                         }
                     }
                 }
+            },
+            /**
+             *
+             * @param color{colorValue}
+             * @returns {object}
+             */
+            tinycolor: function (color) {
+                function isOnePointZero(n) {
+                    return typeof n == "string" && n.indexOf('.') != -1 && parseFloat(n) === 1;
+                }
+
+                function isPercentage(n) {
+                    return typeof n === "string" && n.indexOf('%') != -1;
+                }
+
+                function pad2(c) {
+                    return c.length == 1 ? '0' + c : '' + c;
+                }
+
+                function getColor(i) {
+                    //获取主值
+                    var v = color.substring(4, color.length - 1);
+                    return v.split(',')[i];
+                }
+
+                function bound01(n, max) {
+                    if (isOnePointZero(n)) {
+                        n = "100%";
+                    }
+                    var processPercent = isPercentage(n);
+                    n = Math.min(max, Math.max(0, parseFloat(n)));
+
+                    // Automatically convert percentage into number
+                    if (processPercent) {
+                        n = parseInt(n * max, 10) / 100;
+                    }
+                    // Handle floating point rounding errors
+                    if ((Math.abs(n - max) < 0.000001)) {
+                        return 1;
+                    }
+                    // Convert into [0, 1] range if it isn't already
+                    return (n % max) / parseFloat(max);
+                }
+
+                function rgbToHsl() {
+                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2);
+                    r = bound01(r, 255);
+                    g = bound01(g, 255);
+                    b = bound01(b, 255);
+                    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+                    var h, s, l = (max + min) / 2;
+                    if (max == min) {
+                        h = s = 0; // achromatic
+                    }
+                    else {
+                        var d = max - min;
+                        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                        switch (max) {
+                            case r:
+                                h = (g - b) / d + (g < b ? 6 : 0);
+                                break;
+                            case g:
+                                h = (b - r) / d + 2;
+                                break;
+                            case b:
+                                h = (r - g) / d + 4;
+                                break;
+                        }
+                        h /= 6;
+                    }
+                    return {h: h, s: s, l: l};
+                }
+
+                function hslToRgb() {
+                    var h = color.h || getColor(0), s = color.s || getColor(1), l = color.l || getColor(2);
+                    var r, g, b;
+
+                    h = bound01(h, 360);
+                    s = bound01(s, 100);
+                    l = bound01(l, 100);
+
+                    function hue2rgb(p, q, t) {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1 / 6) return p + (q - p) * 6 * t;
+                        if (t < 1 / 2) return q;
+                        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                        return p;
+                    }
+
+                    if (s === 0) {
+                        r = g = b = l; // achromatic
+                    }
+                    else {
+                        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                        var p = 2 * l - q;
+                        r = hue2rgb(p, q, h + 1 / 3);
+                        g = hue2rgb(p, q, h);
+                        b = hue2rgb(p, q, h - 1 / 3);
+                    }
+
+                    return {r: r * 255, g: g * 255, b: b * 255};
+                }
+
+                function rgbToHex() {
+                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2), allow3Char;
+                    var hex = [
+                        pad2(Math.round(r).toString(16)),
+                        pad2(Math.round(g).toString(16)),
+                        pad2(Math.round(b).toString(16))
+                    ];
+
+                    // Return a 3 character hex if possible
+                    if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
+                        return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
+                    }
+                    return "#" + hex.join("");
+                }
+
+                function hexToRgb() {
+                    var sColor = color.toLowerCase();
+                    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+                    if (sColor && reg.test(sColor)) {
+                        if (sColor.length === 4) {
+                            var sColorNew = "#";
+                            for (var i = 1; i < 4; i += 1) {
+                                sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
+                            }
+                            sColor = sColorNew;
+                        }
+                        //处理六位的颜色值
+                        var sColorChange = [];
+                        for (var i = 1; i < 7; i += 2) {
+                            sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
+                        }
+                        return {r: sColorChange[0], g: sColorChange[1], b: sColorChange[2]};
+                    } else {
+                        return sColor;
+                    }
+                };
+
+                function rgbToRgb() {
+                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2);
+                    return {
+                        r: bound01(r, 255) * 255,
+                        g: bound01(g, 255) * 255,
+                        b: bound01(b, 255) * 255
+                    };
+                }
+
+                function hslToHsl() {
+                    if (typeof color == "object")
+                        return color;
+                    else
+                        return {h: getColor(0), s: getColor(1), l: getColor(2)}
+                }
+
+                //确定当前color类型
+                var type = "rgb";
+                //如果颜色值是对象，并且存在r属性，或者是string型以rgb开关的
+                if ((typeof color == "object" && color.r) || ( typeof color == "string" && color.indexOf("rgb") == 0)) {
+                    type = "rgb";
+                } else if ((typeof color == "object" && color.h) || ( typeof color == "string" && color.indexOf("hsl") == 0)) {
+                    type = "hsl";
+                } else if (typeof color == "string" && color.indexOf("#") == 0) {
+                    type = "hex";
+                }
+                return {
+                    toRgb: function () {
+                        var value;
+                        switch (type) {
+                            case "rgb":
+                                value = rgbToRgb();
+                                break;
+                            case "hsl":
+                                value = hslToRgb();
+                                break;
+                            case  "hex":
+                                value = hexToRgb();
+                                break;
+                        }
+                        return value;
+                    },
+                    toHsl: function () {
+                        var value;
+                        switch (type) {
+                            case "rgb":
+                                value = rgbToHsl();
+                                break;
+                            case "hsl":
+                                value = hslToHsl();
+                                break;
+                            case  "hex":
+                                color = hexToRgb();
+                                value = rgbToHsl();
+                                type = "rgb";
+                                break;
+                        }
+                        return value;
+                    },
+                    toHex: function () {
+                        var value;
+                        switch (type) {
+                            case "rgb":
+                                value = rgbToHex();
+                                break;
+                            case "hsl":
+                                color = hslToRgb();
+                                value = rgbToHex();
+                                type = "rgb";
+                                break;
+                            case  "hex":
+                                value = color;
+                                break;
+                        }
+                        return value;
+                    }
+                }
             }
         }
     }
@@ -201,7 +430,7 @@
         });
     } else {
         this.dtit = dtit;
-		//绑定全局使用
-		window._d = window.dtit = this.dtit();
+        //绑定全局使用
+        window._d = window.dtit = this.dtit();
     }
 })(window);
