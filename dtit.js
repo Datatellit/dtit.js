@@ -245,7 +245,7 @@
                 }
 
                 function rgbToHsl() {
-                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2);
+                    var r = getPostion(color.r, 0), g = getPostion(color.g, 1), b = getPostion(color.b, 2);
                     r = bound01(r, 255);
                     g = bound01(g, 255);
                     b = bound01(b, 255);
@@ -273,8 +273,13 @@
                     return {h: h, s: s, l: l};
                 }
 
+                function getPostion(v, i) {
+                    if (v || v == 0) return v;
+                    return getColor(i);
+                }
+
                 function hslToRgb() {
-                    var h = color.h || getColor(0), s = color.s || getColor(1), l = color.l || getColor(2);
+                    var h = getPostion(color.h, 0), s = getPostion(color.s, 1), l = getPostion(color.l, 2);
                     var r, g, b;
 
                     h = bound01(h, 360);
@@ -305,7 +310,7 @@
                 }
 
                 function rgbToHex() {
-                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2), allow3Char;
+                    var r = getPostion(color.r, 0), g = getPostion(color.g, 1), b = getPostion(color.b, 2), allow3Char;
                     var hex = [
                         pad2(Math.round(r).toString(16)),
                         pad2(Math.round(g).toString(16)),
@@ -342,7 +347,7 @@
                 };
 
                 function rgbToRgb() {
-                    var r = color.r || getColor(0), g = color.g || getColor(1), b = color.b || getColor(2);
+                    var r = getPostion(color.r, 0), g = getPostion(color.g, 1), b = getPostion(color.b, 2);
                     return {
                         r: bound01(r, 255) * 255,
                         g: bound01(g, 255) * 255,
@@ -360,9 +365,9 @@
                 //确定当前color类型
                 var type = "rgb";
                 //如果颜色值是对象，并且存在r属性，或者是string型以rgb开关的
-                if ((typeof color == "object" && color.r) || ( typeof color == "string" && color.indexOf("rgb") == 0)) {
+                if ((typeof color == "object" && (color.r || color.r == 0)) || ( typeof color == "string" && color.indexOf("rgb") == 0)) {
                     type = "rgb";
-                } else if ((typeof color == "object" && color.h) || ( typeof color == "string" && color.indexOf("hsl") == 0)) {
+                } else if ((typeof color == "object" && (color.h || color.h == 0)) || ( typeof color == "string" && color.indexOf("hsl") == 0)) {
                     type = "hsl";
                 } else if (typeof color == "string" && color.indexOf("#") == 0) {
                     type = "hex";
