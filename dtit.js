@@ -306,7 +306,7 @@
                         b = hue2rgb(p, q, h - 1 / 3);
                     }
 
-                    return {r: r * 255, g: g * 255, b: b * 255};
+                    return {r: parseInt(r * 255), g: parseInt(g * 255), b: parseInt(b * 255)};
                 }
 
                 function rgbToHex() {
@@ -340,7 +340,11 @@
                         for (var i = 1; i < 7; i += 2) {
                             sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
                         }
-                        return {r: sColorChange[0], g: sColorChange[1], b: sColorChange[2]};
+                        return {
+                            r: parseInt(sColorChange[0]),
+                            g: parseInt(sColorChange[1]),
+                            b: parseInt(sColorChange[2])
+                        };
                     } else {
                         return sColor;
                     }
