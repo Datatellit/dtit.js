@@ -20,7 +20,7 @@ _d.xxxx
 
 ## 3.Demo
 ```
-    //获取参数
+     //获取参数
     console.log(_d.query("_ijt"));
     console.log(_d.query()); //获取所有参数，返回一个对象
     //格式化字符串
@@ -46,7 +46,7 @@ _d.xxxx
         console.log(o, index);
     })
     //循环对象
-    _d.each({name: "你好", age: 18}, function (key, value) {
+    _d.each({name: "你好", age: 18}, function (value, key) {
         console.log(key, value);
     })
     //跳出循环
