@@ -195,7 +195,7 @@
                                 if (fn && fn(array[key], key) == false)break;
                             }
                             else {
-                                if (fn && fn(key, array[key]) == false)break;
+                                if (fn && fn(array[key], key) == false)break;
                             }
                         }
                     }
