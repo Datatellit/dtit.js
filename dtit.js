@@ -19,7 +19,15 @@
             newXhr.open("get", "", true);
             newXhr.send(null);
         }
+        var dtit_console = 'unKnown';
+
         return {
+            CONST: {
+                DATE_F: "yyyy-MM-dd",
+                TIME_F: "hh:mm:ss",
+                TIME_H_M_F: "hh:mm",
+                DATE_TIME_F: "yyyy-MM-dd hh:mm:ss"
+            },
             /**
              *
              * @param key {string}
@@ -427,6 +435,28 @@
                         return value;
                     }
                 }
+            },
+            /**
+             *
+             * @param status{bool启用或禁用}
+             * @returns {object}
+             */
+            setConsole: function (status) {
+                dtit_console = status;
+                this.setCookie("dtit_console", status);
+            },
+            _isEnable: function () {
+                if (dtit_console != "unKnown")
+                    return dtit_console;
+                else {
+                    var ck = this.getCookie("dtit_console");
+                    if (ck != null) {
+                        dtit_console = ck == "true" ? true : false;
+                        return dtit_console;
+                    } else {
+                        return true;
+                    }
+                }
             }
         }
     }
@@ -442,4 +472,39 @@
         //绑定全局使用
         window._d = window.dtit = this.dtit();
     }
+
+    //增强console，支持一键启用和禁用
+    (function (cl) {
+        var log = cl.log, info = cl.info, warn = cl.warn, error = cl.error, debug = cl.debug;
+        cl.log = function () {
+            if (dtit()._isEnable())
+                return log.apply(this, arguments);
+            else
+                return null;
+        };
+        cl.info = function () {
+            if (dtit()._isEnable())
+                return info.apply(this, arguments);
+            else
+                return null;
+        };
+        cl.warn = function () {
+            if (dtit()._isEnable())
+                return warn.apply(this, arguments);
+            else
+                return null;
+        };
+        cl.error = function () {
+            if (dtit()._isEnable())
+                return error.apply(this, arguments);
+            else
+                return null;
+        };
+        cl.debug = function () {
+            if (dtit()._isEnable())
+                return debug.apply(this, arguments);
+            else
+                return null;
+        };
+    })(window.console);
 })(window);

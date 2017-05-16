@@ -1,6 +1,6 @@
 {
   "name": "dtitjs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "javascript general lib && method",
   "main": "dtit.js",
   "scripts": {
