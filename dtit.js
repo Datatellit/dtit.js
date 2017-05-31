@@ -114,6 +114,22 @@
                 }).toUpperCase();
             },
             /**
+             * @param len {要生成的长度}
+             * @returns {生成的随机字符串}
+             */
+            randomStr: function (len) {
+                if (!len)
+                    return this.guid();
+                else {
+                    var str = "";
+                    for (var i = 0; i < len; i++)
+                        str += "x";
+                    return str.replace(/[x]/g, function (c) {
+                        return Math.random().toString(32).substr(2, 1);
+                    })
+                }
+            },
+            /**
              *
              * @param x{范围起始值int}
              * @param y{范围结束值int}
