@@ -461,6 +461,14 @@
                 dtit_console = status;
                 this.setCookie("dtit_console", status);
             },
+            /**
+             *
+             * @param status{string要除去空格的字符串}
+             * @returns {object}
+             */
+            trim: function (str) {
+                return str == null ? "" : str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            },
             _isEnable: function () {
                 if (dtit_console != "unKnown")
                     return dtit_console;

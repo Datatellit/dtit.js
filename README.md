@@ -72,6 +72,7 @@ _d.xxxx
      console.log("我现在不会被显示在Console控制台哦，并且只要设置后，只要不重启浏览器，设置一直生效，直到接收到true！")
      _d.setConsole(true);
      console.log("我又回来了，哈哈哈")
+     console.log(_d.trim("  我叫xxx   "));
 ```
 ## 4.npm仓库
 https://www.npmjs.com/package/dtitjs
