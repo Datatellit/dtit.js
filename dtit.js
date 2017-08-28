@@ -186,7 +186,7 @@
                 } else {
                     data = null;
                 }
-                if (data && typeof data == "object")
+                if (data && (data.indexOf("{") == 0 || data.indexOf("[") == 0) && (data.indexOf("}") == data.length - 1 || data.indexOf("]") == data.length - 1))
                     return JSON.parse(data);
                 else
                     return data;
@@ -212,14 +212,14 @@
                 } else if (typeof array == "object") {
                     for (var key in array) {
                         if (typeof array[key] == "object") {
-                            if (fn && fn(array[key], parseInt(key)) == false)break;
+                            if (fn && fn(array[key], parseInt(key)) == false) break;
                         }
                         else {
                             if (!isNaN(key)) {
-                                if (fn && fn(array[key], key) == false)break;
+                                if (fn && fn(array[key], key) == false) break;
                             }
                             else {
-                                if (fn && fn(array[key], key) == false)break;
+                                if (fn && fn(array[key], key) == false) break;
                             }
                         }
                     }
